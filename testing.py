@@ -8,7 +8,7 @@ for i in range(1,5):
     g.new_transaction({
         "sender": "initial_TX " + str(i), #"Person " + random.choice(letter),
         "receiver": "Person " + random.choice(letter),
-        "amount": float(i)})
+        "amount": i*10})
 g
 cw = g.cum_weight()
 import networkx as nx

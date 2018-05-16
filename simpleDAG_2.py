@@ -47,11 +47,11 @@ class DAG(object):
             checking = e
             while not (self.valid_proof(self.graph[tips[0]]['proof'], self.graph[tips[1]]['proof'],
                                         self.graph[checking]['proof']) and
-                       self.check_balance(checking)):
+                       self.check_balance()):
                 # print(str(self.valid_proof(self.graph[tips[0]]['proof'], self.graph[tips[1]]['proof'], self.graph[checking]['proof'])) + " " +
                 # str(self.check_balance(checking)))
                 print(checking)
-                print(self.get_balance(checking))
+                print(self.get_balance())
                 del self.graph[checking]  # Delete from graph <-- radical maybe not necessary step
                 new_edge = self.MCMC()
                 checking = new_edge
@@ -124,7 +124,7 @@ class DAG(object):
         weights = self.cum_weight()
         start = [0]  # this is genesis
         for vertex in start:
-            edges = weights[vertex]['cd_edges']
+            edges = weights[vertex]['cd_edges']  # TODO: Warum so komliziert mit den cd_edges wenn ich mir einfach die keys geben könnte vom ganzen Graphen?
             if edges:
                 Hx = len(weights[vertex]['weight'])
                 sum_Hz = 0
@@ -144,23 +144,34 @@ class DAG(object):
         amount = current_transaction['amount']
         return [sender, receiver, amount]
 
-    def get_balance(self, tip):  # maybe change to get balance
+    # def get_balance(self, tip):  # maybe change to get balance
+    #     balance = {'genesis': [self.genesis_amount]}
+    #     tip = {tip}
+    #     iterator = list(tip)
+    #     for t in iterator:
+    #         if t != 0:
+    #             sender, receiver, amount = self.extract_balance(t)
+    #             balance[sender] = balance.get(sender, []) + [-amount]
+    #             balance[receiver] = balance.get(receiver, []) + [amount]
+    #             tip.update(self.graph[t]['edges'])
+    #             appender = list(tip - set(iterator))
+    #             iterator.extend(appender)
+    #     total = {key: sum(balance[key]) for key in balance}
+    #     return total
+
+    def get_balance(self):  # maybe change to get balance
         balance = {'genesis': [self.genesis_amount]}
-        tip = {tip}
-        iterator = list(tip)
-        for t in iterator:
-            if t != 0:
-                sender, receiver, amount = self.extract_balance(t)
+        vertices = self.graph.keys()
+        for vertex in vertices:
+            if vertex != 0:
+                sender, receiver, amount = self.extract_balance(vertex)
                 balance[sender] = balance.get(sender, []) + [-amount]
                 balance[receiver] = balance.get(receiver, []) + [amount]
-                tip.update(self.graph[t]['edges'])
-                appender = list(tip - set(iterator))
-                iterator.extend(appender)
         total = {key: sum(balance[key]) for key in balance}
         return total
 
-    def check_balance(self, tip):
-        total = self.get_balance(tip)
+    def check_balance(self):
+        total = self.get_balance()
         sums = [total[key] for key in total]
         return all(s >= 0 for s in sums)
 
