@@ -44,6 +44,28 @@ def new_transaction():
     return jsonify(response), 201
 
 
+@app.route('/my_balance', methods=['POST'])
+def my_balance():
+    values = request.get_json()
+
+    # Check that the required fields are in the POST'ed data
+    required = ['user_id']
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+
+    # Get all balances
+    all_balances = dag.get_balance()
+    balance = all_balances[values['user_id']]
+
+    response = {values['user_id']: balance}
+    return jsonify(response), 201
+
+
+@app.route('/all_balance', methods=['GET'])
+def all_balance():
+    return jsonify(dag.get_balance())
+
+
 @app.route('/dag', methods=['GET'])
 def full_dag():
     response = {
