@@ -1,4 +1,3 @@
-from simpleDAG_2 import DAG
 from flask import Flask, jsonify, request
 
 
@@ -8,8 +7,11 @@ app = Flask(__name__)
 # Generate a globally unique address for this node --> recipient address for transaction sender and receivers
 # node_identifier = str(uuid4()).replace('-', '')
 
+from simpleDAG_2 import *
+
 # Instantiate the Blockchain
 dag = DAG()
+logger.info('DAG instantiated')
 
 
 @app.route('/genesis', methods=['POST'])
@@ -74,10 +76,15 @@ def full_dag():
     }
     return jsonify(response), 200
 
+@app.route('/')
+def default():
+    logger.info('Default page requested')
+    return 'This page is the root for the CO2 xChange.'
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
 
+    logger.info('name==main statement')
     parser = ArgumentParser()
     parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on')
     args = parser.parse_args()

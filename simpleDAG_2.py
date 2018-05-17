@@ -1,11 +1,14 @@
 import hashlib
 import json
 import random
+import logging
 from time import time
 
 from collections import OrderedDict
 from math import exp
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # https://stackoverflow.com/questions/19472530/representing-graphs-data-structure-in-python
 # https://www.python-course.eu/graphs_python.php
