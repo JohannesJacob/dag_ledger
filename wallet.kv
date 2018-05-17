@@ -1,0 +1,22 @@
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+ScreenManagement:
+	transition: FadeTransition()
+	LoginScreen:
+	BalanceScreen:
+		
+<LoginScreen>:
+	name: "login"
+	Label: 
+	    text: "CO2 Coin xChange"
+	Button:
+	    on_release: app.root.current = "balance"
+		text: "Login"
+		
+<BalanceScreen>:
+	name: "balance"
+	Button:
+		on_release: app.root.current = "login"
+		text: "Next Screen"
+		font_size: 50
+		

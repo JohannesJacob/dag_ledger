@@ -11,7 +11,9 @@ from math import exp
 # https://www.python-course.eu/graphs_python.php
 # https://github.com/davebshow/structures
 
-
+# TODO: Visualizing the graph: probably best as tree structure
+# TODO: Solving the chain problem with several full nodes
+# TODO: User registration
 class DAG(object):
     """ Graph data structure, undirected by default. """
 
